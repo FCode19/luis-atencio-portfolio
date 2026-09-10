@@ -11,6 +11,7 @@ $routes = [
     '/' => ['view' => 'home', 'title' => 'Luis Atencio | AI & Automation Portfolio'],
     '/projects' => ['view' => 'projects', 'title' => 'Projects | Luis Atencio'],
     '/projects/avip' => ['view' => 'project-avip', 'title' => 'AVIP | Luis Atencio'],
+    '/projects/bankops' => ['view' => 'project-bankops', 'title' => 'BankOps AI | Luis Atencio'],
 ];
 
 $route = $routes[$uri] ?? null;

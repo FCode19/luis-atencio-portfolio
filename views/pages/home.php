@@ -2,6 +2,7 @@
 $projects = require __DIR__ . '/../../data/projects.php';
 $featured = $projects[0];
 ?>
+
 <section class="hero-section d-flex align-items-center">
     <div class="container py-5">
         <div class="row align-items-center g-5">
@@ -23,21 +24,24 @@ $featured = $projects[0];
 <section class="section-space">
     <div class="container">
         <span class="eyebrow">FEATURED CASE STUDY</span>
-        <h2 class="mt-2 mb-4">AVIP — <?= e($featured['subtitle']) ?></h2>
+        <h2 class="mt-2 mb-4"><?= e($featured['name']) ?> — <?= e($featured['subtitle']) ?></h2>
 
         <div class="project-feature-card">
             <div class="row g-4 align-items-center">
                 <div class="col-lg-7">
                     <p class="text-secondary-custom mb-4"><?= e($featured['description']) ?></p>
+
                     <div class="d-flex flex-wrap gap-2 mb-4">
                         <?php foreach ($featured['stack'] as $technology): ?>
                             <span class="tech-badge"><?= e($technology) ?></span>
                         <?php endforeach; ?>
                     </div>
+
                     <a href="<?= e($featured['url']) ?>" class="btn btn-light">
                         View case study <i class="bi bi-arrow-right ms-2"></i>
                     </a>
                 </div>
+
                 <div class="col-lg-5">
                     <div class="metrics-grid">
                         <?php foreach ($featured['metrics'] as $label => $value): ?>

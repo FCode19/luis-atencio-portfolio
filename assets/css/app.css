@@ -43,3 +43,89 @@ a { color: inherit; }
     .hero-section { min-height: auto; padding-top: 130px; padding-bottom: 70px; }
     .section-space { padding: 64px 0; }
 }
+
+/* BankOps case study */
+.case-info-card {
+    padding: 26px;
+    border: 1px solid var(--border);
+    background: var(--panel);
+    border-radius: 18px;
+}
+
+.case-info-card h3 {
+    margin-bottom: 12px;
+}
+
+.validation-card {
+    padding: 28px;
+    border: 1px solid var(--border);
+    background: var(--panel);
+    border-radius: 18px;
+}
+
+.validation-card strong {
+    display: block;
+    margin-bottom: 8px;
+    font-size: clamp(1.8rem, 3vw, 2.6rem);
+}
+
+.validation-card span {
+    color: var(--muted);
+}
+
+.project-note {
+    padding-left: 18px;
+    border-left: 3px solid var(--accent);
+    color: var(--muted);
+}
+
+.evidence-stack {
+    display: grid;
+    gap: 38px;
+}
+
+.evidence-card {
+    overflow: hidden;
+    margin: 0;
+    border: 1px solid var(--border);
+    background: var(--panel);
+    border-radius: 18px;
+}
+
+.evidence-card img {
+    display: block;
+    width: 100%;
+    height: auto;
+    background: var(--bg);
+}
+
+.evidence-card figcaption {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 20px 24px;
+    border-top: 1px solid var(--border);
+}
+
+.evidence-card figcaption strong {
+    font-size: 1rem;
+}
+
+.evidence-card figcaption span {
+    color: var(--muted);
+    font-size: .9rem;
+}
+
+@media (max-width: 767.98px) {
+    .evidence-stack {
+        gap: 26px;
+    }
+
+    .evidence-card {
+        border-radius: 14px;
+    }
+
+    .evidence-card figcaption {
+        padding: 16px 18px;
+    }
+}
