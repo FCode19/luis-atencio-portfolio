@@ -121,7 +121,7 @@ $body = "Has recibido un nuevo mensaje desde tu portafolio.\n\n"
     . "Fecha: " . date('Y-m-d H:i:s T') . "\n\n"
     . "Mensaje:\n{$message}\n";
 
-$dryRun = getenv('PORTFOLIO_CONTACT_DRY_RUN') === '1';
+$dryRun = portfolioEnvironmentValue('PORTFOLIO_CONTACT_DRY_RUN') === '1';
 if (!$dryRun) {
     $autoloadPath = dirname(__DIR__) . '/vendor/autoload.php';
     if (!is_file($autoloadPath) || SMTP_HOST === '' || SMTP_USERNAME === '' || SMTP_PASSWORD === '' || CONTACT_FROM_EMAIL === '') {
