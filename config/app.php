@@ -12,7 +12,12 @@ function loadPortfolioEnvironment(string $path): void {
     }
 
     foreach ($values as $key => $value) {
-        if (!is_string($key) || getenv($key) !== false) {
+        if (!is_string($key)) {
+            continue;
+        }
+
+        $currentValue = getenv($key);
+        if ($currentValue !== false && trim((string) $currentValue) !== '') {
             continue;
         }
         $stringValue = is_string($value) ? $value : (string) $value;
