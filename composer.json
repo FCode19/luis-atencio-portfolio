@@ -1,0 +1,14 @@
+{
+    "name": "fcode19/luis-atencio-portfolio",
+    "description": "Bilingual portfolio for AI, automation and systems engineering projects.",
+    "license": "proprietary",
+    "type": "project",
+    "require": {
+        "php": "^8.1",
+        "phpmailer/phpmailer": "^7.0"
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "sort-packages": true
+    }
+}

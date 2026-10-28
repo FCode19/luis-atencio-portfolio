@@ -4,6 +4,9 @@ declare(strict_types=1);
 require __DIR__ . '/config/app.php';
 require __DIR__ . '/src/helpers.php';
 
+startPortfolioSession();
+$visitorCount = registerVisit();
+
 $uri = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/';
 $uri = rtrim($uri, '/') ?: '/';
 
@@ -23,6 +26,11 @@ if (!$route) {
 
 $pageTitle = $route['title'];
 $view = $route['view'];
+
+if ($view === 'home') {
+    $contactCsrf = contactCsrfToken();
+    $contactChallenge = currentContactChallenge();
+}
 
 require __DIR__ . '/views/layouts/header.php';
 require __DIR__ . "/views/pages/{$view}.php";

@@ -1,0 +1,80 @@
+name: Deploy to InfinityFree
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: infinityfree-production
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    name: Build and deploy over FTP
+    runs-on: ubuntu-latest
+    env:
+      IF_FTP_SERVER: ${{ secrets.IF_FTP_SERVER }}
+      IF_FTP_USERNAME: ${{ secrets.IF_FTP_USERNAME }}
+      IF_FTP_PASSWORD: ${{ secrets.IF_FTP_PASSWORD }}
+      IF_PRODUCTION_ENV: ${{ secrets.IF_PRODUCTION_ENV }}
+
+    steps:
+      - name: Check deployment configuration
+        id: deployment
+        shell: bash
+        run: |
+          if [[ -n "$IF_FTP_SERVER" && -n "$IF_FTP_USERNAME" && -n "$IF_FTP_PASSWORD" && -n "$IF_PRODUCTION_ENV" ]]; then
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::InfinityFree deployment is waiting for the required repository secrets."
+          fi
+
+      - name: Check out repository
+        if: steps.deployment.outputs.ready == 'true'
+        uses: actions/checkout@v4
+
+      - name: Set up PHP
+        if: steps.deployment.outputs.ready == 'true'
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          coverage: none
+          tools: composer:v2
+
+      - name: Validate Composer files
+        if: steps.deployment.outputs.ready == 'true'
+        run: composer validate --strict --no-check-publish
+
+      - name: Install production dependencies
+        if: steps.deployment.outputs.ready == 'true'
+        run: composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
+
+      - name: Create protected production environment
+        if: steps.deployment.outputs.ready == 'true'
+        shell: bash
+        run: |
+          umask 077
+          printf '%s\n' "$IF_PRODUCTION_ENV" > .env
+
+      - name: Upload application to InfinityFree
+        if: steps.deployment.outputs.ready == 'true'
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.IF_FTP_SERVER }}
+          username: ${{ secrets.IF_FTP_USERNAME }}
+          password: ${{ secrets.IF_FTP_PASSWORD }}
+          protocol: ftp
+          local-dir: ./
+          server-dir: /htdocs/
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/node_modules/**
+            data/visits.json
+            data/contact-rate-limit.json
+            README.md
