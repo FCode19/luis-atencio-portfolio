@@ -59,7 +59,13 @@ jobs:
         shell: bash
         run: |
           umask 077
-          printf '%s\n' "$IF_PRODUCTION_ENV" > .env
+          printf '%b\n' "$IF_PRODUCTION_ENV" > .env
+          for key in APP_URL SMTP_HOST SMTP_USERNAME SMTP_PASSWORD CONTACT_EMAIL CONTACT_FROM_EMAIL; do
+            grep -q "^${key}=" .env || {
+              echo "::error::Production environment is missing ${key}."
+              exit 1
+            }
+          done
 
       - name: Upload application to InfinityFree
         if: steps.deployment.outputs.ready == 'true'
